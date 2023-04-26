@@ -1,10 +1,10 @@
-const fs = require('fs')
+import fs from 'fs'
 
-class ProductManager {
+export default class ProductManager {
     #idProduct = 1
     constructor(path) {
         this.path = path
-        fs.writeFileSync(this.path, JSON.stringify([]))
+        // fs.writeFileSync(this.path, JSON.stringify([]))
         this.products = []
     }
 
@@ -36,17 +36,16 @@ class ProductManager {
 
     async getProducts() {
         let productos = await fs.promises.readFile(this.path, 'utf-8')
-        console.log(JSON.parse(productos))
+        return JSON.parse(productos)
     }
 
     async getProductById(idProd) {
         const listadoProductos = await this.#getAllProducts()
         const producto = listadoProductos.findIndex((item) => item.id === idProd)
         if (producto >= 0) {
-            console.log(listadoProductos[producto])
-            return
+            return listadoProductos[producto]
         }
-        console.log('Not Found')
+        return 'Not found'
     }
 
     #getId() {
@@ -117,26 +116,26 @@ class ProductManager {
     }
 }
 
-const pm = new ProductManager('./products.json')
+
 
 
 //updateProduct: El parametro "campos" puede ser un objeto con multiples pares key:value o bien un string
-async function tests() {
-    await pm.getProducts()
-    await pm.addProduct('remera', 'remera de algodon blanca', 1500, 'sin imagen', 12870001, 20)
-    await pm.addProduct('Patalon', 'Pantalon de Jean', 3500, 'sin imagen', 12870002, 10)
-    await pm.addProduct('Zapatos', 'Zapatos negros', 4500, 'sin imagen', 12870004, 10)
-    await pm.getProducts()
-    await pm.updateProduct(1, { 'title': 'camisa', 'price': 2000, 'id': 5 }, 5000)
-    await pm.getProducts()
-    await pm.updateProduct(1, { 'nombre': 'tela', 'price': 2000, 'id': 5 }, 5000)
-    await pm.getProducts()
-    await pm.updateProduct(1, 'description', 'Camisa color blanco')
-    await pm.deleteProduct(3)
-    await pm.deleteProduct(3)
-    await pm.getProducts()
-    await pm.getProductById(1)
-    await pm.getProductById(5)
+// async function tests() {
+//     await pm.getProducts()
+//     await pm.addProduct('remera', 'remera de algodon blanca', 1500, 'sin imagen', 12870001, 20)
+//     await pm.addProduct('Patalon', 'Pantalon de Jean', 3500, 'sin imagen', 12870002, 10)
+//     await pm.addProduct('Zapatos', 'Zapatos negros', 4500, 'sin imagen', 12870004, 10)
+//     await pm.getProducts()
+//     await pm.updateProduct(1, { 'title': 'camisa', 'price': 2000, 'id': 5 }, 5000)
+//     await pm.getProducts()
+//     await pm.updateProduct(1, { 'nombre': 'tela', 'price': 2000, 'id': 5 }, 5000)
+//     await pm.getProducts()
+//     await pm.updateProduct(1, 'description', 'Camisa color blanco')
+//     await pm.deleteProduct(3)
+//     await pm.deleteProduct(3)
+//     await pm.getProducts()
+//     await pm.getProductById(1)
+//     await pm.getProductById(5)
 
-}
-tests()
+// }
+// tests()
